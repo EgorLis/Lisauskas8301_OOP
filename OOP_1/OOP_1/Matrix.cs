@@ -14,43 +14,27 @@ namespace OOP_1
 
         public Matrix(int n, int m)
         {
-            try
+            if (n < 1 || m < 1)
             {
-                if (n < 1 || m < 1)
-                {
-                    throw new ArgumentOutOfRangeException();
-                }
-                arr = new double[n, m];
-                N = n;
-                M = m;
-
+                throw new ArgumentOutOfRangeException("Wrong dimension");
             }
-            catch
-            {
-                Console.WriteLine("Wrong dimension");
-            }
+            arr = new double[n, m];
+            N = n;
+            M = m;
         }
 
         public Matrix(int n, int m, double[] Array)
         {
-            try
+            if (n < 1 || m < 1 || n * m != Array.Length)
             {
-                if (n < 1 || m < 1 || n * m != Array.Length)
-                {
-                    throw new ArgumentOutOfRangeException();
-                }
-                arr = new double[n, m];
-                for (int i = 0; i < n; i++)
-                    for (int j = 0; j < m; j++)
-                        arr[i, j] = Array[j + i * m];
-                N = n;
-                M = m;
-
+                throw new ArgumentOutOfRangeException("Wrong dimension or array lenght less than n * m");
             }
-            catch
-            {
-                Console.WriteLine("Wrong dimension");
-            }
+            arr = new double[n, m];
+            for (int i = 0; i < n; i++)
+                for (int j = 0; j < m; j++)
+                    arr[i, j] = Array[j + i * m];
+            N = n;
+            M = m;
         }
 
 
@@ -165,7 +149,7 @@ namespace OOP_1
         public double Det()
         {
             if (N != M)
-                throw new ArgumentOutOfRangeException();
+                throw new ArgumentOutOfRangeException("Matrix isn't square");
             double det = 1;
             Matrix A;
             A = 1 * this;

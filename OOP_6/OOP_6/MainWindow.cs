@@ -10,10 +10,10 @@ using System.Windows.Forms;
 
 namespace OOP_6
 {
-    public partial class Form1 : Form
+    public partial class MainWindow : Form
     {
         public List<Shape> ListShapes;
-        public Form1()
+        public MainWindow()
         {
             InitializeComponent();
         }
@@ -23,6 +23,7 @@ namespace OOP_6
             ListBoxShapes.Items.Clear();
             for (int i = 0; i < ListShapes.Count; i++)
                 ListBoxShapes.Items.Add(ListShapes[i].ToString());
+            ShapeBinSerialazier.Serialize(ListShapes, "Save.bin");
         }
 
         private void DeleteShapeButton_Click(object sender, EventArgs e)
@@ -245,12 +246,12 @@ namespace OOP_6
             };
         }
 
-        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        private void MainWindow_FormClosed(object sender, FormClosedEventArgs e)
         {
             ShapeBinSerialazier.Serialize(ListShapes, "Save.bin");
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void MainWindow_Load(object sender, EventArgs e)
         {
             ListShapes = new List<Shape>();
             ListShapes = ShapeBinSerialazier.Deserialize("Save.bin");

@@ -23,7 +23,7 @@ namespace OOP_6
             }
             catch
             {
-                throw new FileLoadException();
+                throw new FileLoadException("File cannot be readed");
             }
             
         }
@@ -43,7 +43,7 @@ namespace OOP_6
             }
             catch
             {
-                throw new InvalidDataException();
+                throw new InvalidDataException("File cannot be deserialized");
             }
         }
     }

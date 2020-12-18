@@ -20,7 +20,7 @@ namespace OOP_2
         public Rectangle(double len,double wd)
         {
             if (len <= 0 || wd <= 0)
-                throw new ArgumentOutOfRangeException();
+                throw new ArgumentOutOfRangeException("Length or width less or equal 0");
             this.lenght = len;
             this.width = wd;
         }
@@ -42,7 +42,7 @@ namespace OOP_2
         public Square(double len)
         {
             if (len <= 0)
-                throw new ArgumentOutOfRangeException();
+                throw new ArgumentOutOfRangeException("Length less or equal 0");
             this.lenght = len;
             
         }
@@ -73,7 +73,7 @@ namespace OOP_2
                 side_3 = side3;
             }
             else
-                throw new ArgumentOutOfRangeException();
+                throw new ArgumentOutOfRangeException("This treeanlge cannot be created, 2 sides must be larger than third side");
         }
 
         public double calcArea()
@@ -95,7 +95,7 @@ namespace OOP_2
         public Circle(double rad)
         {
             if (rad <= 0)
-                throw new ArgumentOutOfRangeException();
+                throw new ArgumentOutOfRangeException("Radius less or equal 0");
             this.radius = rad;
         }
         public double calcArea()
