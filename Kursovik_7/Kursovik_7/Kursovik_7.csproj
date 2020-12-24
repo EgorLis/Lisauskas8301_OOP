@@ -52,6 +52,7 @@
     <Compile Include="Forms\AdminWindow.Designer.cs">
       <DependentUpon>AdminWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="Scripts\AppEnums.cs" />
     <Compile Include="Scripts\AppSerializer.cs" />
     <Compile Include="Forms\AuthWindow.cs">
       <SubType>Form</SubType>

@@ -20,9 +20,9 @@ namespace Kursovik_7
                     formatter.Serialize(fs, auditories);
                 }
             }
-            catch
+            catch(FileLoadException)
             {
-                throw new FileLoadException("File cannot be readed");
+                throw;
             }
 
         }
@@ -40,9 +40,9 @@ namespace Kursovik_7
                     return DeserializedShapes;
                 }
             }
-            catch
+            catch (FileLoadException)
             {
-                throw new InvalidDataException("File cannot be deserialized");
+                throw;
             }
         }
 
@@ -56,9 +56,9 @@ namespace Kursovik_7
                     formatter.Serialize(fs, teachers);
                 }
             }
-            catch
+            catch (FileLoadException)
             {
-                throw new FileLoadException("File cannot be readed");
+                throw;
             }
 
         }
@@ -76,9 +76,9 @@ namespace Kursovik_7
                     return DeserializedShapes;
                 }
             }
-            catch
+            catch(FileLoadException)
             {
-                throw new InvalidDataException("File cannot be deserialized");
+                throw;
             }
         }
     }

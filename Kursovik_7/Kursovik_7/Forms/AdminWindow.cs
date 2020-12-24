@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Kursovik_7
-{
+{   
     public partial class AdminWindow : Form
     {
         public AdminWindow()
@@ -189,6 +189,7 @@ namespace Kursovik_7
                 TeachersBox.Text = "";
             }
             UpdateTeacherBox();
+            Program.CheckAudToMatchWithTeachers();
         }
 
         private void AddAudButton_Click(object sender, EventArgs e)
@@ -247,6 +248,8 @@ namespace Kursovik_7
         {
             if (AuditoriumBox.SelectedIndex >= 0)
             {
+                int ColumnWidth = 60;
+                int RowHeight = 30;
                 Form Bookingform = new Form();
                 Bookingform.Size = new Size(650, 650);
                 Bookingform.MaximumSize = Bookingform.Size;
@@ -254,26 +257,23 @@ namespace Kursovik_7
                 Bookingform.Show();
                 Label CellHolder = new Label();
                 DataGridView AudGrid = new DataGridView();
-                AudGrid.Columns.Add("Monday", "Пн");
-                AudGrid.Columns.Add("Tuesday", "Вт");
-                AudGrid.Columns.Add("Wednesday", "Ср");
-                AudGrid.Columns.Add("Thursday", "Чт");
-                AudGrid.Columns.Add("Friday", "Пт");
-                AudGrid.Columns.Add("Saturday", "Сб");
-                string[] row = { "8:00", "8:00", "8:00", "8:00", "8:00", "8:00" };
-                AudGrid.Rows.Add(row);
-                row = new string[] { "9:40", "9:40", "9:40", "9:40", "9:40", "9:40" };
-                AudGrid.Rows.Add(row);
-                row = new string[] { "11:35", "11:35", "11:35", "11:35", "11:35", "11:35" };
-                AudGrid.Rows.Add(row);
-                row = new string[] { "13:45", "13:45", "13:45", "13:45", "13:45", "13:45" };
-                AudGrid.Rows.Add(row);
-                row = new string[] { "15:40", "15:40", "15:40", "15:40", "15:40", "15:40" };
-                AudGrid.Rows.Add(row);
-                row = new string[] { "17:20", "17:20", "17:20", "17:20", "17:20", "17:20" };
-                AudGrid.Rows.Add(row);
+                foreach(string day in AppEnums.Days)
+                {
+                    AudGrid.Columns.Add(day, day);
+                }
+                string[] row;
+                foreach(string time in AppEnums.LessonsTime)
+                {
+                    row = new string[AppEnums.Days.Length];
+                    for(int i=0;i<row.Length;++i)
+                    {
+                        row[i] = time;
+                    }
+                    AudGrid.Rows.Add(row);
+                }
                 AudGrid.Location = new Point(150, 100);
-                AudGrid.Size = new Size(362, 182 + AudGrid.ColumnHeadersHeight);
+                AudGrid.Size = new Size(ColumnWidth * AppEnums.Days.Length +2,
+                     RowHeight * AppEnums.LessonsTime.Length + 2 + AudGrid.ColumnHeadersHeight);
                 AudGrid.ScrollBars = ScrollBars.None;
                 AudGrid.AllowDrop = false;
                 AudGrid.AllowUserToResizeColumns = false;
@@ -287,15 +287,18 @@ namespace Kursovik_7
                 ScheduleCellStyle.BackColor = Color.Red;
                 TeacherCellStyle.BackColor = Color.Brown;
                 DefaultCellStyle.BackColor = Color.White;
-                for (int i = 0; i < 6; i++)
+                for (int i = 0; i < AppEnums.LessonsTime.Length; i++)
                 {
-                    AudGrid.Columns[i].Width = 60;
-                    AudGrid.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
                     AudGrid.Rows[i].ReadOnly = true;
-                    AudGrid.Rows[i].Height = 30;
+                    AudGrid.Rows[i].Height = RowHeight;
                 }
-                for (int i = 0; i < 6; i++)
-                    for (int j = 0; j < 6; j++)
+                for (int i = 0; i < AppEnums.Days.Length; i++)
+                {
+                    AudGrid.Columns[i].Width = ColumnWidth;
+                    AudGrid.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
+                }
+                for (int i = 0; i < AppEnums.LessonsTime.Length; i++)
+                    for (int j = 0; j < AppEnums.Days.Length; j++)
                     {
                         if (Program.AllAuditories[AuditoriumBox.SelectedIndex][i, j] == "schedule")
                             AudGrid.Rows[i].Cells[j].Style = ScheduleCellStyle;

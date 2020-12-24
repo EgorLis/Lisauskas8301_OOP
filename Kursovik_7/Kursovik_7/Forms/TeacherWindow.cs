@@ -32,6 +32,8 @@ namespace Kursovik_7
         {
             if (AuditoriumBox.SelectedIndex >= 0)
             {
+                int ColumnWidth = 60;
+                int RowHeight = 30;
                 Form Bookingform = new Form();
                 Bookingform.Size = new Size(650, 650);
                 Bookingform.MaximumSize = Bookingform.Size;
@@ -39,26 +41,23 @@ namespace Kursovik_7
                 Bookingform.Show();
                 Label CellHolder = new Label();
                 DataGridView AudGrid = new DataGridView();
-                AudGrid.Columns.Add("Monday", "Пн");
-                AudGrid.Columns.Add("Tuesday", "Вт");
-                AudGrid.Columns.Add("Wednesday", "Ср");
-                AudGrid.Columns.Add("Thursday", "Чт");
-                AudGrid.Columns.Add("Friday", "Пт");
-                AudGrid.Columns.Add("Saturday", "Сб");
-                string[] row = { "8:00", "8:00", "8:00", "8:00", "8:00", "8:00" };
-                AudGrid.Rows.Add(row);
-                row = new string[] { "9:40", "9:40", "9:40", "9:40", "9:40", "9:40" };
-                AudGrid.Rows.Add(row);
-                row = new string[] { "11:35", "11:35", "11:35", "11:35", "11:35", "11:35" };
-                AudGrid.Rows.Add(row);
-                row = new string[] { "13:45", "13:45", "13:45", "13:45", "13:45", "13:45" };
-                AudGrid.Rows.Add(row);
-                row = new string[] { "15:40", "15:40", "15:40", "15:40", "15:40", "15:40" };
-                AudGrid.Rows.Add(row);
-                row = new string[] { "17:20", "17:20", "17:20", "17:20", "17:20", "17:20" };
-                AudGrid.Rows.Add(row);
+                foreach (string day in AppEnums.Days)
+                {
+                    AudGrid.Columns.Add(day, day);
+                }
+                string[] row;
+                foreach (string time in AppEnums.LessonsTime)
+                {
+                    row = new string[AppEnums.Days.Length];
+                    for (int i = 0; i < row.Length; ++i)
+                    {
+                        row[i] = time;
+                    }
+                    AudGrid.Rows.Add(row);
+                }
                 AudGrid.Location = new Point(150, 100);
-                AudGrid.Size = new Size(362, 182 + AudGrid.ColumnHeadersHeight);
+                AudGrid.Size = new Size(ColumnWidth * AppEnums.Days.Length + 2,
+                     RowHeight * AppEnums.LessonsTime.Length + 2 + AudGrid.ColumnHeadersHeight);
                 AudGrid.ScrollBars = ScrollBars.None;
                 AudGrid.AllowDrop = false;
                 AudGrid.AllowUserToResizeColumns = false;
@@ -72,15 +71,18 @@ namespace Kursovik_7
                 ScheduleCellStyle.BackColor = Color.Red;
                 TeacherCellStyle.BackColor = Color.Brown;
                 DefaultCellStyle.BackColor = Color.White;
-                for (int i = 0; i < 6; i++)
+                for (int i = 0; i < AppEnums.LessonsTime.Length; i++)
                 {
-                    AudGrid.Columns[i].Width = 60;
-                    AudGrid.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
                     AudGrid.Rows[i].ReadOnly = true;
-                    AudGrid.Rows[i].Height = 30;
+                    AudGrid.Rows[i].Height = RowHeight;
                 }
-                for (int i = 0; i < 6; i++)
-                    for (int j = 0; j < 6; j++)
+                for (int i = 0; i < AppEnums.Days.Length; i++)
+                {
+                    AudGrid.Columns[i].Width = ColumnWidth;
+                    AudGrid.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
+                }
+                for (int i = 0; i < AppEnums.LessonsTime.Length; i++)
+                    for (int j = 0; j < AppEnums.Days.Length; j++)
                     {
                         if (Program.AllAuditories[AuditoriumBox.SelectedIndex][i, j] == "schedule")
                             AudGrid.Rows[i].Cells[j].Style = ScheduleCellStyle;
@@ -231,6 +233,8 @@ namespace Kursovik_7
         {
             if(OneDayBox.SelectedIndex >=0)
             {
+                int ColumnWidth = 120;
+                int RowHeight = 30;
                 DataGridViewCellStyle ScheduleCellStyle = new DataGridViewCellStyle();
                 DataGridViewCellStyle TeacherCellStyle = new DataGridViewCellStyle();
                 DataGridViewCellStyle DefaultCellStyle = new DataGridViewCellStyle();
@@ -246,33 +250,27 @@ namespace Kursovik_7
                 {
                     row = Program.AllAuditories[i].AudID ;
                     AudGrid.Rows.Add(row);
-                    row =  "8:00";
-                    AudGrid.Rows.Add(row);
-                    row ="9:40";
-                    AudGrid.Rows.Add(row);
-                    row = "11:35";
-                    AudGrid.Rows.Add(row);
-                    row = "13:45";
-                    AudGrid.Rows.Add(row);
-                    row = "15:40" ;
-                    AudGrid.Rows.Add(row);
-                    row = "17:20" ;
-                    AudGrid.Rows.Add(row);
-                    AudGrid.Rows[AudGrid.Rows.Count - 8].Cells[0].Style.ForeColor = Color.BlueViolet;
-                    Font font = new Font(Font.FontFamily, 10);
-                    AudGrid.Rows[AudGrid.Rows.Count - 8].Cells[0].Style.Font = font;
-                    AudGrid.Rows[AudGrid.Rows.Count - 8].ReadOnly = true;
-                    for (int j=0;j<6;j++)
+                    foreach(string time in AppEnums.LessonsTime)
                     {
-                        AudGrid.Rows[AudGrid.Rows.Count - 7 + j].ReadOnly = true;
+                        row = time;
+                        AudGrid.Rows.Add(row);
+                    }
+                    AudGrid.Rows[AudGrid.Rows.Count - (AppEnums.LessonsTime.Length +2)].Cells[0].Style.ForeColor = Color.BlueViolet;
+                    Font font = new Font(Font.FontFamily, 10);
+                    AudGrid.Rows[AudGrid.Rows.Count - (AppEnums.LessonsTime.Length + 2)].Cells[0].Style.Font = font;
+                    AudGrid.Rows[AudGrid.Rows.Count - (AppEnums.LessonsTime.Length + 2)].ReadOnly = true;
+                    for (int j=0;j< AppEnums.LessonsTime.Length; j++)
+                    {
+                        AudGrid.Rows[AudGrid.Rows.Count - (AppEnums.LessonsTime.Length + 1) + j].ReadOnly = true;
                         if (Program.AllAuditories[i][j, OneDayBox.SelectedIndex] == "schedule")
-                            AudGrid.Rows[AudGrid.Rows.Count - 7 + j].Cells[0].Style = ScheduleCellStyle;
+                            AudGrid.Rows[AudGrid.Rows.Count - (AppEnums.LessonsTime.Length + 1) + j].Cells[0].Style = ScheduleCellStyle;
                         else if (Program.AllAuditories[i][j, OneDayBox.SelectedIndex] != "")
-                            AudGrid.Rows[AudGrid.Rows.Count - 7 + j].Cells[0].Style = TeacherCellStyle;
+                            AudGrid.Rows[AudGrid.Rows.Count - (AppEnums.LessonsTime.Length + 1) + j].Cells[0].Style = TeacherCellStyle;
                     }
                 }
                 AudGrid.Location = new Point(400, 70);
-                AudGrid.Size = new Size(132, 182 + AudGrid.ColumnHeadersHeight);
+                AudGrid.Size = new Size(ColumnWidth + 12 , 
+                    RowHeight * AppEnums.LessonsTime.Length + 2 + AudGrid.ColumnHeadersHeight);
                 AudGrid.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 AudGrid.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 AudGrid.ScrollBars = ScrollBars.Vertical;
@@ -282,10 +280,10 @@ namespace Kursovik_7
                 AudGrid.AllowUserToAddRows = false;
                 AudGrid.RowHeadersVisible = false;
                 AudGrid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-                AudGrid.Columns[0].Width = 120;
+                AudGrid.Columns[0].Width = ColumnWidth;
                 AudGrid.Columns[0].SortMode = DataGridViewColumnSortMode.NotSortable;
                 AudGrid.Rows[0].ReadOnly = true;
-                AudGrid.Rows[0].Height = 30;
+                AudGrid.Rows[0].Height = RowHeight;
                 AudGrid.SelectionChanged += (Sender, args) =>
                 {
                     AudGrid.ClearSelection();

@@ -10,6 +10,8 @@ namespace Kursovik_7
     [Serializable]
     class Auditorium
     {
+        private int MaxDaysOnWeek = AppEnums.Days.Length;
+        private int MaxLessonPerDay = AppEnums.LessonsTime.Length;
         // in our university 6 lessons is max for one day and education 6 day a weak 
          
         private SortedDictionary<int, string> AllLessons;
@@ -19,18 +21,18 @@ namespace Kursovik_7
         {
             AudID = id;
             AllLessons = new SortedDictionary<int, string>();
-            for (int i = 0; i < 36; ++i)
+            for (int i = 0; i < MaxDaysOnWeek * MaxLessonPerDay; ++i)
                 AllLessons.Add(i, "");
         }
 
         public string this[int i, int j]
         {
-            get => AllLessons[i*6 + j];
+            get => AllLessons[i* MaxLessonPerDay + j];
 
             set
             {
-                if ((i+1)*6+(j+1) <= AllLessons.Count())
-                    AllLessons[i * 6 + j] = value;
+                if (i* MaxLessonPerDay + j < AllLessons.Count())
+                    AllLessons[i * MaxLessonPerDay + j] = value;
             }
         }
 
